@@ -6,8 +6,8 @@ public final class setTuringMachine {
 
     }
 
-    public static TuringProccess addition() {
-        TuringProccess newTM = new TuringProccess();
+    public static TuringMachine addition() {
+        TuringMachine newTM = new TuringMachine();
         newTM.addState("q0");
         newTM.addState("q1");
         newTM.addState("q2");
@@ -16,20 +16,44 @@ public final class setTuringMachine {
         newTM.addState("q5");
         newTM.addState("qa");
         newTM.addState("qr");
-        newTM.setStartState("q0");
+        newTM.setStateAwal("q0");
         newTM.setAcceptState("qa");
         newTM.setRejectState("qr");
-        newTM.addTransition("q0", '0', "q1", 'X', true);
-        newTM.addTransition("q0", '1', "q5", 'B', true);
-        newTM.addTransition("q1", '0', "q1", '0', true);
-        newTM.addTransition("q1", '1', "q2", '1', true);
-        newTM.addTransition("q2", '0', "q2", '0', true);
-        newTM.addTransition("q2", 'B', "q3", '0', false);
-        newTM.addTransition("q3", '0', "q3", '0', false);
-        newTM.addTransition("q3", '1', "q4", '1', false);
-        newTM.addTransition("q4", '0', "q4", '0', false);
-        newTM.addTransition("q4", 'X', "q0", 'X', true);
-        newTM.addTransition("q5", '0', "qa", '0', true);
+        newTM.addTransition("q0", "0", "q1", "X", "R");
+        newTM.addTransition("q0", "1", "q5", "B", "R");
+        newTM.addTransition("q1", "0", "q1", "0", "R");
+        newTM.addTransition("q1", "1", "q2", "1", "R");
+        newTM.addTransition("q2", "0", "q2", "0", "R");
+        newTM.addTransition("q2", "B", "q3", "0", "L");
+        newTM.addTransition("q3", "0", "q3", "0", "L");
+        newTM.addTransition("q3", "1", "q4", "1", "L");
+        newTM.addTransition("q4", "0", "q4", "0", "L");
+        newTM.addTransition("q4", "X", "q0", "X", "R");
+        newTM.addTransition("q5", "0", "qa", "0", "R");
+
+//        TuringProccess newTM = new TuringProccess();
+//        newTM.addState("q0");
+//        newTM.addState("q1");
+//        newTM.addState("q2");
+//        newTM.addState("q3");
+//        newTM.addState("q4");
+//        newTM.addState("q5");
+//        newTM.addState("qa");
+//        newTM.addState("qr");
+//        newTM.setStartState("q0");
+//        newTM.setAcceptState("qa");
+//        newTM.setRejectState("qr");
+//        newTM.addTransition("q0", '0', "q1", 'X', true);
+//        newTM.addTransition("q0", '1', "q5", 'B', true);
+//        newTM.addTransition("q1", '0', "q1", '0', true);
+//        newTM.addTransition("q1", '1', "q2", '1', true);
+//        newTM.addTransition("q2", '0', "q2", '0', true);
+//        newTM.addTransition("q2", 'B', "q3", '0', false);
+//        newTM.addTransition("q3", '0', "q3", '0', false);
+//        newTM.addTransition("q3", '1', "q4", '1', false);
+//        newTM.addTransition("q4", '0', "q4", '0', false);
+//        newTM.addTransition("q4", 'X', "q0", 'X', true);
+//        newTM.addTransition("q5", '0', "qa", '0', true);
         return newTM;
     }
 
