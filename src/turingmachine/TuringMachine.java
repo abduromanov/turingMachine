@@ -5,7 +5,6 @@
  */
 package turingmachine;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -23,7 +22,7 @@ public class TuringMachine {
     private String RejectState;
 
     private String Tape;
-    private String CurrentState;
+    private String cekState;
     private int index;
 
     class Transition {
@@ -46,21 +45,20 @@ public class TuringMachine {
         AcceptState = "";
         RejectState = "";
         Tape = "";
-        CurrentState = "";
+        cekState = "";
         index = 0;
     }
 
     public void execute(String input) {
-        CurrentState = stateAwal;
+        cekState = stateAwal;
         Tape = input;
         Transition trans = null;
-        boolean accept = false;
-        while (!CurrentState.equalsIgnoreCase(AcceptState)) {
-            String[] tmp = Tape.split("(?!^)");
+        while (!cekState.equalsIgnoreCase(AcceptState)) {
+            String[] tmp = Tape.split("");
             Iterator<Transition> iterator = jumlahTransisi.iterator();
             while (iterator.hasNext()) {
                 trans = iterator.next();
-                if (trans.bacaState.equalsIgnoreCase(CurrentState) && trans.bacaSimbol.equalsIgnoreCase(tmp[index])) {
+                if (trans.bacaState.equalsIgnoreCase(cekState) && trans.bacaSimbol.equalsIgnoreCase(tmp[index])) {
                     tmp[index] = trans.gantiSimbol;
                     if (trans.arahTape.equalsIgnoreCase("R")) {
                         index++;
@@ -70,65 +68,61 @@ public class TuringMachine {
                             index = 0;
                         }
                     }
-                    
-                    CurrentState = trans.stateSetelah;
+                    cekState = trans.stateSetelah;
                     break;
                 }
             }
 
-            if (!accept) {
-                input = printResult(tmp, "");
-                System.out.println(input + " state : " + trans.bacaState + " next : " + tmp[index] + " next State: " + trans.stateSetelah + " dir : " + trans.arahTape);
-                Tape = input;
-            } else {
-                System.err.println("Rejected");
+            input = printResult(tmp);
+            System.out.println(input + " | state : " + trans.bacaState + " next : " + tmp[index] + " next State: " + trans.stateSetelah + " dir : " + trans.arahTape);
+            Tape = input;
+            
+            if (cekState.equalsIgnoreCase(AcceptState)) {
+                System.out.println("Accepted");
                 break;
             }
         }
     }
 
-    public String printResult(String[] result, String delim) {
+    public String printResult(String[] result) {
         String print = "";
-        for (int i = 0; i < result.length; i++) {
-            if (i != 0) {
-                print += delim;
-            }
-            print += result[i];
+        for (String result1 : result) {
+            print += result1;
         }
         return print;
     }
 
-    public void addState(String newState) {
-        if (!jumlahState.contains(newState)) {
-            jumlahState.add(newState);
+    public void addState(String stateBaru) {
+        if (!jumlahState.contains(stateBaru)) {
+            jumlahState.add(stateBaru);
         }
     }
 
-    public void setStateAwal(String newStartState) {
-        if (jumlahState.contains(newStartState)) {
-            stateAwal = newStartState;
+    public void setStateAwal(String stateAwalBaru) {
+        if (jumlahState.contains(stateAwalBaru)) {
+            stateAwal = stateAwalBaru;
         }
     }
 
-    public void setAcceptState(String newAcceptState) {
-        if (jumlahState.contains(newAcceptState) && !RejectState.equals(newAcceptState)) {
-            AcceptState = newAcceptState;
+    public void setFinalState(String stateFinalBaru) {
+        if (jumlahState.contains(stateFinalBaru) && !RejectState.equals(stateFinalBaru)) {
+            AcceptState = stateFinalBaru;
         }
     }
 
-    public void setRejectState(String newRejectState) {
-        if (jumlahState.contains(newRejectState) && !AcceptState.equals(newRejectState)) {
-            RejectState = newRejectState;
+    public void setRejectState(String stateTolakBaru) {
+        if (jumlahState.contains(stateTolakBaru) && !AcceptState.equals(stateTolakBaru)) {
+            RejectState = stateTolakBaru;
         }
     }
 
-    public void addTransition(String currentState, String currentSymbol, String nextState, String replace, String direction) {
+    public void addTransition(String bacaState, String bacaSimbol, String stateSetelah, String gantiSimbol, String arahTape) {
         boolean check = false;
-        if (!jumlahState.contains(currentState) && !jumlahState.contains(nextState)) {
+        if (!jumlahState.contains(bacaState) && !jumlahState.contains(stateSetelah)) {
             Iterator<Transition> TransitionsIterator = jumlahTransisi.iterator();
             while (TransitionsIterator.hasNext() && check == false) {
                 Transition nextTransition = TransitionsIterator.next();
-                if (nextTransition.check(currentState, currentSymbol)) {
+                if (nextTransition.check(bacaState, bacaSimbol)) {
                     check = true;
                     break;
                 }
@@ -136,13 +130,13 @@ public class TuringMachine {
         }
 
         if (!check) {
-            Transition newTransition = new Transition();
-            newTransition.bacaState = currentState;
-            newTransition.bacaSimbol = currentSymbol;
-            newTransition.stateSetelah = nextState;
-            newTransition.gantiSimbol = replace;
-            newTransition.arahTape = direction;
-            jumlahTransisi.add(newTransition);
+            Transition tambahTrans = new Transition();
+            tambahTrans.bacaState = bacaState;
+            tambahTrans.bacaSimbol = bacaSimbol;
+            tambahTrans.stateSetelah = stateSetelah;
+            tambahTrans.gantiSimbol = gantiSimbol;
+            tambahTrans.arahTape = arahTape;
+            jumlahTransisi.add(tambahTrans);
         }
     }
 }
