@@ -74,7 +74,11 @@ public class TuringMachine {
             }
 
             input = printResult(tmp);
-            System.out.println(input + " | state : " + trans.bacaState + " next : " + tmp[index] + " next State: " + trans.stateSetelah + " dir : " + trans.arahTape);
+            System.out.println(input 
+                    + " | state : " + trans.bacaState 
+                    + " next : " + tmp[index] 
+                    + " next State: " + trans.stateSetelah 
+                    + " dir : " + trans.arahTape);
             Tape = input;
             
             if (cekState.equalsIgnoreCase(AcceptState)) {
