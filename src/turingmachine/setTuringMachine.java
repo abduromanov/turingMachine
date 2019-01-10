@@ -59,7 +59,7 @@ public final class setTuringMachine {
         newTM.addTransition("q4", "X", "q0", "X", "R");
         newTM.addTransition("q5", "0", "q6", "0", "R");
         newTM.addTransition("q5", "X", "q5", "X", "R");
-        newTM.addTransition("q6", "B", "qa", "B", "L");
+        newTM.addTransition("q6", "B", "qa", "B", "R");
         return newTM;
     }
     
@@ -98,6 +98,7 @@ public final class setTuringMachine {
         newTM.addTransition("q7", "0", "q7", "X", "R");
         newTM.addTransition("q7", "1", "q8", "X", "R");
         newTM.addTransition("q8", "0", "qa", "0", "R");
+        newTM.addTransition("q8", "B", "qa", "B", "R");
         return newTM;
     }
 
