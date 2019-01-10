@@ -53,12 +53,10 @@ public class TuringMachine {
     public void execute(String input) {
         CurrentState = stateAwal;
         Tape = input;
-        String print = "";
-        Transition trans;
+        Transition trans = null;
         boolean accept = false;
-        while (true) {
+        while (!CurrentState.equalsIgnoreCase(AcceptState)) {
             String[] tmp = Tape.split("(?!^)");
-            System.out.println(tmp[0]+tmp[1]);
             Iterator<Transition> iterator = jumlahTransisi.iterator();
             while (iterator.hasNext()) {
                 trans = iterator.next();
@@ -68,39 +66,24 @@ public class TuringMachine {
                         index++;
                     } else if (trans.arahTape.equalsIgnoreCase("L")) {
                         index--;
-//                        if (index < 0) {
-//                            index = 0;
-//                        }
-                    } else if (trans.bacaState.equalsIgnoreCase(AcceptState)) {
-                        accept = true;
+                        if (index < 0) {
+                            index = 0;
+                        }
                     }
+                    
                     CurrentState = trans.stateSetelah;
                     break;
                 }
-                if (!accept) {
-                    input = printResult(tmp, "");
-                    System.out.println(input + " AT state " + trans.bacaState + " index : " + index + " next : " + tmp[index]);
-                }
             }
-//            for (int i = 0; i < jumlahTransisi.size(); i++) {
-//                if (trans.bacaState.equals(CurrentState) && trans.bacaSimbol.equals(tmp[index])) {
-//                    tmp[index] = trans.stateSetelah;
-//                    if (trans.arahTape.equals("R")) {
-//                        index++;
-//                    } else if (trans.arahTape.equals("L")) {
-//                        index--;
-//                    }
-//                    CurrentState = trans.stateSetelah;
-//                    break;
-//                }
-//                if (accept) {
-//                    input = printResult(tmp, "");
-//                    break;
-//                } else {
-//                    input = printResult(tmp, "");
-//                    System.out.println(input + " State : " + CurrentState + " move to : " + trans.bacaState + " " + tmp[index]);
-//                }
-//            }
+
+            if (!accept) {
+                input = printResult(tmp, "");
+                System.out.println(input + " state : " + trans.bacaState + " next : " + tmp[index] + " next State: " + trans.stateSetelah + " dir : " + trans.arahTape);
+                Tape = input;
+            } else {
+                System.err.println("Rejected");
+                break;
+            }
         }
     }
 
@@ -140,26 +123,26 @@ public class TuringMachine {
     }
 
     public void addTransition(String currentState, String currentSymbol, String nextState, String replace, String direction) {
-//        boolean check = false;
-//        if (!jumlahState.contains(currentState) && !jumlahState.contains(nextState)) {
-//            Iterator<Transition> TransitionsIterator = jumlahTransisi.iterator();
-//            while (TransitionsIterator.hasNext() && check == false) {
-//                Transition nextTransition = TransitionsIterator.next();
-//                if (nextTransition.check(currentState, currentSymbol)) {
-//                    check = true;
-//                    break;
-//                }
-//            }
-//        }
-//
-//        if (!check) {
-        Transition newTransition = new Transition();
-        newTransition.bacaState = currentState;
-        newTransition.bacaSimbol = currentSymbol;
-        newTransition.stateSetelah = nextState;
-        newTransition.gantiSimbol = replace;
-        newTransition.arahTape = direction;
-        jumlahTransisi.add(newTransition);
-//        }
+        boolean check = false;
+        if (!jumlahState.contains(currentState) && !jumlahState.contains(nextState)) {
+            Iterator<Transition> TransitionsIterator = jumlahTransisi.iterator();
+            while (TransitionsIterator.hasNext() && check == false) {
+                Transition nextTransition = TransitionsIterator.next();
+                if (nextTransition.check(currentState, currentSymbol)) {
+                    check = true;
+                    break;
+                }
+            }
+        }
+
+        if (!check) {
+            Transition newTransition = new Transition();
+            newTransition.bacaState = currentState;
+            newTransition.bacaSimbol = currentSymbol;
+            newTransition.stateSetelah = nextState;
+            newTransition.gantiSimbol = replace;
+            newTransition.arahTape = direction;
+            jumlahTransisi.add(newTransition);
+        }
     }
 }
